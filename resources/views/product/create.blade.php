@@ -13,31 +13,31 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form" action="{{ url('product/postCreate') }}" method="post" e nctype="multipart/form-data">
+                    <form role="form" action="{{ url('product/postCreate') }}" method="post" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="txt-id">Produc Id</label>
-                                <input type="text" class="form-control" id="txt id" name="id" placeholder="1">
+                                <input type="text" class="form-control" id="txt-id" name="id" placeholder="1">
                             </div>
                             <div class="form-group">
                                 <label for="txt-name">Produc Name</label>
-                                <input type="text" class="form-control" id="txt name" name="name" placeholder="Input Product Name">
+                                <input type="text" class="form-control" id="txt-name" name="name" placeholder="Input Product Name">
                             </div>
                             <div class="form-group">
                                 <label for="txt-price">Produc Price</label>
-                                <input type="text" class="form-control" id="txt price" name="price" placeholder="1">
+                                <input type="text" class="form-control" id="txt-price" name="price" placeholder="1">
                             </div>
                             <div class="form-group">
                                 <label>Description</label>
-                                <textarea class="form control" rows="3" name="description" placeholder="Enter ..."></textarea>
+                                <textarea class="form-control" rows="3" name="description" placeholder="Enter ..."></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="image">Image</label>
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file input" id="image" name="image">
-                                        <label class="custom-file label" for="image">Choose Image</label>
+                                        <input type="file" class="custom-file-input" id="image" name="image">
+                                        <label class="custom-file-label" for="image">Choose Image</label>
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
 </section>
 @endsection
 @section('script-section')
-<script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file input.min.js') }}"></script>
+<script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         bsCustomFileInput.init();

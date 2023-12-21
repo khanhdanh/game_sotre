@@ -25,7 +25,8 @@ class ProductController extends Controller
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension();
             if ($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg') {
-                return redirect('product/create')->with('loi', 'Bạn chỉ được chọn file có đuôi jpg,png,jpeg');
+                return redirect('product/create')
+                ->with('loi', 'Bạn chỉ được chọn file có đuôi jpg,png,jpeg');
             }
             $imageName = $file->getClientOriginalName();
             $file->move("images", $imageName);
@@ -40,6 +41,7 @@ class ProductController extends Controller
             'image' => $imageName
         ]);
         return redirect()->action([ProductController::class, 'index']);
+        return redirect()->action('ProductController@index');
     }
     public function update($id)
     {
@@ -69,16 +71,16 @@ class ProductController extends Controller
         }
         $p = DB::table('product')
             ->where('id', intval($id))
-            ->update(
-                ['name' => $name, 'price' => intval($price), 'description' => $description, 'image' => $imageName]
-            );
-            return redirect()->action([ProductController::class, 'index']);
+            ->update(['name' => $name, 'price' => intval($price), 'description' => $description, 'image' => $imageName]);
+        return redirect()->action('ProductController@index');
+        return redirect()->action([ProductController::class, 'index']);
     }
     public function delete($id)
     {
         $p = DB::table('product')
             ->where('id', intval($id))
             ->delete();
-            return redirect()->action([ProductController::class, 'index']);
+        return redirect()->action('ProductController@index');
+        return redirect()->action([ProductController::class, 'index']);
     }
 }

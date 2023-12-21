@@ -49,10 +49,10 @@
                                     <a class="btn btn-primary btn-sm" href="#">
                                         <i class="fas fa-folder"></i> View
                                     </a>
-                                    <a class="btn btn-info btn sm" href="{{ url('product/update/'.$p->id) }}">
+                                    <a class="btn btn-info btn-sm" href="{{ url('product/update/'.$p->id) }}">
                                         <i class="fas fa-pencil-alt"></i> Edit
                                     </a>
-                                    <a class="btn btn-danger btn sm" href="{{ url('product/delete/'.$p->id) }}">
+                                    <a class="btn btn-danger btn-sm" href="{{ url('product/delete/'.$p->id) }}">
                                         <i class="fas fa-trash"></i> Delete
                                     </a>
                                 </td>
