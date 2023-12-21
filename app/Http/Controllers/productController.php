@@ -9,7 +9,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = DB::table('tbproduct')->get();
+        $products = DB::table('product')->get();
         return view('product.index')->with(['products' => $products]);
     }
     public function create()
@@ -41,7 +41,6 @@ class ProductController extends Controller
             'image' => $imageName
         ]);
         return redirect()->action([ProductController::class, 'index']);
-        return redirect()->action('ProductController@index');
     }
     public function update($id)
     {
@@ -72,7 +71,7 @@ class ProductController extends Controller
         $p = DB::table('product')
             ->where('id', intval($id))
             ->update(['name' => $name, 'price' => intval($price), 'description' => $description, 'image' => $imageName]);
-        return redirect()->action('ProductController@index');
+
         return redirect()->action([ProductController::class, 'index']);
     }
     public function delete($id)
@@ -80,7 +79,6 @@ class ProductController extends Controller
         $p = DB::table('product')
             ->where('id', intval($id))
             ->delete();
-        return redirect()->action('ProductController@index');
         return redirect()->action([ProductController::class, 'index']);
     }
 }
