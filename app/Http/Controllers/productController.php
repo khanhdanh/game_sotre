@@ -5,68 +5,80 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class productController extends Controller
+class ProductController extends Controller
 {
     public function index()
     {
-        $books = DB::table('tbproduct')->get();
-        return view('product.index')->with(['books' => $books]);
+        $products = DB::table('tbproduct')->get();
+        return view('product.index')->with(['products' => $products]);
     }
     public function create()
     {
         return view('product.create');
     }
-
-
     public function postCreate(Request $request)
     {
-        $name = $request->input('name');
-        $gameconsole = $request->input('gameconsole');
-        $brand = $request->input('brand');
-        $type = $request->input('type');
-        $detail = $request->input('detail');
-        $price = $request->input('price');
-        DB::table('tbproduct')->insert([
-            'name' => ($name),
-            'gameconsole' => ($gameconsole),
-            'brand' => ($brand),
-            'type' => ($type),
-            'detail' => ($detail),
-            'price' => ($price)
+        // nhận tất cả tham số vào mảng product
+        $product = $request->all();
+        // xử lý upload hình vào thư mục
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg') {
+                return redirect('product/create')->with('loi', 'Bạn chỉ được chọn file có đuôi jpg,png,jpeg');
+            }
+            $imageName = $file->getClientOriginalName();
+            $file->move("images", $imageName);
+        } else {
+            $imageName = null;
+        }
+        DB::table('product')->insert([
+            'id' => intval($product['id']),
+            'name' => $product['name'],
+            'price' => intval($product['price']),
+            'description' => $product['description'],
+            'image' => $imageName
         ]);
-        return redirect()->action([productController::class, 'index']);
+        return redirect()->action([ProductController::class, 'index']);
     }
-    public function update($name)
+    public function update($id)
     {
-        $book = DB::table('tbproduct')
-            ->where('name', ($name))
+        $p = DB::table('product')
+            ->where('id', intval($id))
             ->first();
-        return view('product.update', ['b' => $book]);
+        return view('product.update', ['p' => $p]);
     }
-    public function postUpdate(Request $request, $name)
+
+    public function postUpdate(Request $request, $id)
     {
-        $gameconsole = $request->input('gameconsole');
-        $brand = $request->input('brand');
-        $type = $request->input('type');
-        $detail = $request->input('detail');
+        $name = $request->input('name');
         $price = $request->input('price');
-        $b = DB::table('tbproduct')
-            ->where('name', ($name))
-            ->update([
-                'name' => ($name),
-                'gameconsole' => ($gameconsole),
-                'brand' => ($brand),
-                'type' => ($type),
-                'detail' => ($detail),
-                'price' => ($price)
-            ]);
-        return redirect()->action([productController::class, 'index']);
+        $description = $request->input('description');
+        // xử lý upload hình vào thư mục
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg') {
+                return redirect('product/update')->with('loi', 'Bạn chỉ được chọn file có đuôi jpg,png,jpeg');
+            }
+            $imageName = $file->getClientOriginalName();
+            $file->move("public/images", $imageName);
+        } else { // không upload hình mới => giữ lại hình cũ
+            $p = DB::table('product')->where('id', intval($id))->first();
+            $imageName = $p->image;
+        }
+        $p = DB::table('product')
+            ->where('id', intval($id))
+            ->update(
+                ['name' => $name, 'price' => intval($price), 'description' => $description, 'image' => $imageName]
+            );
+            return redirect()->action([ProductController::class, 'index']);
     }
-    public function delete($name)
+    public function delete($id)
     {
-        $b = DB::table('tbproduct')
-            ->where('name', ($name))
+        $p = DB::table('product')
+            ->where('id', intval($id))
             ->delete();
-        return redirect()->action([productController::class, 'index']);
+            return redirect()->action([ProductController::class, 'index']);
     }
 }
